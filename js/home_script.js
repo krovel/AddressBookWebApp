@@ -1,6 +1,14 @@
+let addressBookContactList;
 window.addEventListener("DOMContentLoaded", () => {
+    addressBookContactList = getAddressBookContactListFromStorage();
+    document.querySelector(".person-count").textContent = addressBookContactList.length;
     createInnerHtml();
 });
+
+const getAddressBookContactListFromStorage = () => {
+    return localStorage.getItem("AddressBookList") ?
+        JSON.parse(localStorage.getItem("AddressBookList")) : [];
+};
 
 const createInnerHtml = () => {
     const headerHtml =
@@ -11,9 +19,8 @@ const createInnerHtml = () => {
         "<th>Zip Code</th>" +
         "<th>Phone Number</th>" +
         "<th>Actions</th>";
-    let addressBookContactLocalList = createAddressBookJSON();
     let innerHtml = `${headerHtml}`;
-    for (let contactData of addressBookContactLocalList) {
+    for (let contactData of addressBookContactList) {
         innerHtml = `${innerHtml}
         <tr>
             <td>${contactData._fullName}</td>
@@ -31,26 +38,3 @@ const createInnerHtml = () => {
     }
     document.querySelector("#display").innerHTML = innerHtml;
 };
-
-const createAddressBookJSON = () => {
-    let addressBookContactLocalList = [{
-            _address: "2/6, Sector-L, L.D.A. Colony, Kanpur Road, Aashiyana, Lucknow, Uttar Pradesh",
-            _city: "Lucknow",
-            _fullName: "Aditya Verma",
-            _id: "1",
-            _phoneNumber: "8989036180",
-            _state: "Uttar Pradesh",
-            _zip: "226022",
-        },
-        {
-            _address: "11/33, Mark Town, Bhopal, Madhya Pradesh",
-            _city: "Bhopal",
-            _fullName: "Alan Starboy",
-            _id: "2",
-            _phoneNumber: "9198546428",
-            _state: "Madhya Pradesh",
-            _zip: "482005",
-        }
-    ];
-    return addressBookContactLocalList;
-}
