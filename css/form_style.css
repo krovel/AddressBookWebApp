@@ -155,3 +155,22 @@ select {
     width: 100%;
     padding: 10px;
 }
+
+.validity-check {
+    display: flex;
+    flex-direction: row;
+}
+
+error-output {
+    margin-left: 2px;
+    font-size: 14px;
+    font-style: italic;
+    color: red;
+}
+
+valid-message {
+    font-size: 14px;
+    color: green;
+    margin-left: 4px;
+    font-weight: bold;
+}
