@@ -58,7 +58,8 @@ const save = (event) => {
     event.stopPropagation();
     try {
         setAddressBookContactJSONObject();
-        createAddressBookContactData();
+        UpdateLocalStorage();
+        window.location.replace(site_properties.home_page);
     } catch (submitError) {
         alert(submitError);
         return;
@@ -72,8 +73,18 @@ const setAddressBookContactJSONObject = () => {
     addressBookContactJSONObject._city = getValue('#city');
     addressBookContactJSONObject._state = getValue('#state');
     addressBookContactJSONObject._zip = getValue('#zip');
-    alert("ADDED JSON Object : " + addressBookContactJSONObject._fullName);
 };
+
+const UpdateLocalStorage = () => {
+    let addressBookList = JSON.parse(localStorage.getItem("AddressBookList"));
+    if (addressBookList) {
+        addressBookList.push(createAddressBookContactData());
+    } else {
+        addressBookList = [createAddressBookContactData()];
+    }
+    alert("Local Storage Updated Successfully!\nTotal Contacts : " + addressBookList.length);
+    localStorage.setItem("AddressBookList", JSON.stringify(addressBookList));
+}
 
 const createAddressBookContactData = (id) => {
     let contactData = new Contact();
