@@ -1,3 +1,5 @@
+let addressBookContactJSONObject = {};
+
 window.addEventListener('DOMContentLoaded', (event) => {
     const fullName = document.querySelector("#full-name");
     fullName.addEventListener('input', function() {
@@ -47,6 +49,32 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 });
+
+const save = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    try {
+        setAddressBookContactJSONObject();
+    } catch (submitError) {
+        alert(submitError);
+        return;
+    }
+};
+
+const setAddressBookContactJSONObject = () => {
+    addressBookContactJSONObject._fullName = getValue('#full-name');
+    addressBookContactJSONObject._address = getValue('#address');
+    addressBookContactJSONObject._phoneNumber = getValue('#tel');
+    addressBookContactJSONObject._city = getValue('#city');
+    addressBookContactJSONObject._state = getValue('#state');
+    addressBookContactJSONObject._zip = getValue('#zip');
+    alert("ADDED JSON Object : " + addressBookContactJSONObject._fullName);
+};
+
+const getValue = (propertyId) => {
+    let value = document.querySelector(propertyId).value;
+    return value;
+};
 
 const setTextContent = (propertyId, value) => {
     const contentElement = document.querySelector(propertyId);
