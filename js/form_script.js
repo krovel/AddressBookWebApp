@@ -59,6 +59,7 @@ const save = (event) => {
     try {
         setAddressBookContactJSONObject();
         UpdateLocalStorage();
+        resetForm();
         window.location.replace(site_properties.home_page);
     } catch (submitError) {
         alert(submitError);
@@ -128,6 +129,31 @@ const createNewContactId = () => {
     localStorage.setItem("ContactID", contactId);
     return contactId;
 }
+
+const resetForm = () => {
+    setValue("#full-name", "");
+    setTextContent(".full-name-error", "");
+    setTextContent(".valid-full-name", "");
+    setValue("#tel", "");
+    setTextContent(".tel-error", "");
+    setTextContent(".valid-tel", "");
+    setValue("#address", "");
+    setTextContent(".address-error", "");
+    setTextContent(".valid-address", "");
+    setSelectedIndex("#city", 0);
+    setSelectedIndex("#state", 0);
+    setSelectedIndex("#zip", 0);
+};
+
+const setValue = (propertyId, value) => {
+    const element = document.querySelector(propertyId);
+    element.value = value;
+};
+
+const setSelectedIndex = (propertyId, index) => {
+    const element = document.querySelector(propertyId);
+    element.selectedIndex = index;
+};
 
 const getValue = (propertyId) => {
     let value = document.querySelector(propertyId).value;
