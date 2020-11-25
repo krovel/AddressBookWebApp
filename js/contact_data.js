@@ -1,5 +1,12 @@
 class Contact {
 
+    get id() {
+        return this._id;
+    }
+    set id(id) {
+        this._id = id;
+    }
+
     get fullName() {
         return this._fullName;
     }
