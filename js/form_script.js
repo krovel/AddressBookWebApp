@@ -6,14 +6,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
         if (fullName.value.length == 0) {
             setTextContent(".full-name-error", "");
             setTextContent(".valid-full-name", "");
-        }
-        try {
-            (new Contact()).fullName = fullName.value;
-            setTextContent(".full-name-error", "");
-            setTextContent(".valid-full-name", '✓');
-        } catch (error) {
-            setTextContent(".full-name-error", error);
-            setTextContent(".valid-full-name", "");
+        } else {
+            try {
+                (new Contact()).fullName = fullName.value;
+                setTextContent(".full-name-error", "");
+                setTextContent(".valid-full-name", '✓');
+            } catch (error) {
+                setTextContent(".full-name-error", error);
+                setTextContent(".valid-full-name", "");
+            }
         }
     });
 
@@ -22,14 +23,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
         if (phoneNumber.value.length == 0) {
             setTextContent(".tel-error", "");
             setTextContent(".valid-tel", "");
-        }
-        try {
-            (new Contact()).phoneNumber = phoneNumber.value;
-            setTextContent(".tel-error", "");
-            setTextContent(".valid-tel", '✓');
-        } catch (error) {
-            setTextContent(".tel-error", error);
-            setTextContent(".valid-tel", "");
+        } else {
+            try {
+                (new Contact()).phoneNumber = phoneNumber.value;
+                setTextContent(".tel-error", "");
+                setTextContent(".valid-tel", '✓');
+            } catch (error) {
+                setTextContent(".tel-error", error);
+                setTextContent(".valid-tel", "");
+            }
         }
     });
 
@@ -38,14 +40,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
         if (address.value.length == 0) {
             setTextContent(".address-error", "");
             setTextContent(".valid-address", "");
-        }
-        try {
-            (new Contact()).address = address.value;
-            setTextContent(".address-error", "");
-            setTextContent(".valid-address", '✓');
-        } catch (error) {
-            setTextContent(".address-error", error);
-            setTextContent(".valid-address", "");
+        } else {
+            try {
+                (new Contact()).address = address.value;
+                setTextContent(".address-error", "");
+                setTextContent(".valid-address", '✓');
+            } catch (error) {
+                setTextContent(".address-error", error);
+                setTextContent(".valid-address", "");
+            }
         }
     });
 });
@@ -55,6 +58,7 @@ const save = (event) => {
     event.stopPropagation();
     try {
         setAddressBookContactJSONObject();
+        createAddressBookContactData();
     } catch (submitError) {
         alert(submitError);
         return;
@@ -70,6 +74,49 @@ const setAddressBookContactJSONObject = () => {
     addressBookContactJSONObject._zip = getValue('#zip');
     alert("ADDED JSON Object : " + addressBookContactJSONObject._fullName);
 };
+
+const createAddressBookContactData = (id) => {
+    let contactData = new Contact();
+    if (!id) contactData.id = createNewContactId();
+    else contactData.id = id;
+    setAddressBookContactClassObject(contactData);
+    return contactData;
+}
+
+const setAddressBookContactClassObject = (contactData) => {
+    try {
+        contactData.fullName = addressBookContactJSONObject._fullName;
+    } catch (error) {
+        setTextContent(".full-name-error", error);
+        setTextContent(".valid-full-name", "");
+        throw error;
+    }
+    try {
+        contactData.address = addressBookContactJSONObject._address;
+    } catch (error) {
+        setTextContent(".address-error", error);
+        setTextContent(".valid-address", "");
+        throw error;
+    }
+    try {
+        contactData.phoneNumber = addressBookContactJSONObject._phoneNumber;
+    } catch (error) {
+        setTextContent(".tel-error", error);
+        setTextContent(".valid-tel", "");
+        throw error;
+    }
+    contactData.city = addressBookContactJSONObject._city;
+    contactData.state = addressBookContactJSONObject._state;
+    contactData.zip = addressBookContactJSONObject._zip;
+    alert("ADDED CONTACT CLASS Object :\n" + contactData.toString());
+};
+
+const createNewContactId = () => {
+    let contactId = localStorage.getItem("ContactID");
+    contactId = !contactId ? 1 : (parseInt(contactId) + 1).toString();
+    localStorage.setItem("ContactID", contactId);
+    return contactId;
+}
 
 const getValue = (propertyId) => {
     let value = document.querySelector(propertyId).value;
